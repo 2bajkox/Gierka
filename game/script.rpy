@@ -83,7 +83,7 @@ label start:
             show hero_wkurw at left   
             ja "Kim jesteś! i co ja tu robie??!"
             hide hero_wkurw
-            show hero_poczatek at left
+            show NormalnaMina at left
             r "wyluzuuj! bo ci żyłka pęknie"
             r"Jak powiedziałem jestem i nazywam się Pan Radio"
             r"jak chcesz mogę być również Panią"
@@ -96,6 +96,8 @@ label start:
             
         "(Milcz)":  
             ja "Huuuh...?"
+            hide hero_poczatek
+            show NormalnaMina at left
             
     #Kod tutaj wykonuje się po zakończeniu wyboru
     r "W każdym razie, cieszę się, że tu jesteś."
@@ -110,7 +112,7 @@ label start:
     hide radio    
     ja "Psia mać! muszę coś wykombinować bo oszaleje.."
     "Drzwi są zamknięte."
-    hide hero_poczatek
+    hide NormalnaMina
 
 
     
