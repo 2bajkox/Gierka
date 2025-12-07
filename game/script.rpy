@@ -39,8 +39,10 @@ define apple_item = Item("Jabłko", "apple_idle", "apple_hover")
 
 # ----- START GRY--------
 label start:
-    scene bg start 
+    # Ta komenda sprawia, że ikonka pojawia się na ekranie
+    show screen plecak_ikona
 
+    scene bg start
     "Budzi cię potworny ból głowy. Wokół panuje półmrok, a powietrze pachnie stęchlizną i metalem."
     "Próbujesz wstać, ale przez silne zawroty głowy, twoje ciało odmawia posłuszeństwa"
     "Przez silne zawroty wydaje ci się że słyszysz znajomy głos, ale nic ci nieprzychodzi do głowy"

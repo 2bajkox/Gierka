@@ -80,3 +80,15 @@ default plecak = Inventory()
 define przedmiot_lom = Item("Łom", "lom.png", "lom.png") 
 define przedmiot_mapa = Item("Mapa", "mapa.png", "mapa.png")
 define przedmiot_karta = Item("Karta", "karta.png", "karta.png")
+
+#----------------------------- IKONA PLECAK ------------------------------------
+screen plecak_ikona():
+    zorder 90 # Warstwa poniżej otwartego plecaka (żeby plecak przykrył ikonę jak się otworzy)
+    
+    imagebutton:
+        # Grafiki ikony (musisz je mieć w folderze images)
+        idle "ikona_plecaka.png" 
+        hover "ikona_plecaka_hover.png" # Opcjonalne: inna grafika jak najedziesz myszką
+        focus_mask True
+        # Akcja po kliknięciu
+        action Show("plecak_screen")
