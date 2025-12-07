@@ -2,11 +2,11 @@
 errors listed below, and try again.
 
 
-The label start is defined twice, at File "game/script.rpy", line 40:
-label start :
-and File "game/script.rpy", line 62:
-label start:
+The label Choice is defined twice, at File "game/script.rpy", line 57:
+    label Choice:   
+and File "game/script.rpy", line 100:
+    label Choice:   
 
 
 Ren'Py Version: Ren'Py 8.4.1.25072401
-Sun Dec  7 19:58:14 2025
+Sun Dec  7 21:10:04 2025

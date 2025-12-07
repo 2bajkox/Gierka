@@ -6,6 +6,7 @@ define m = Character("???",who_color="#ff0000") # Potwór
 
 ## zmienne logiczne ( flagi) do śledzenia postępów
 default ma_lom = False
+default ma_latarke = False
 default ma_bezpiecznik = False
 default ma_karta_dostepu= False
 default ma_mapa= False
@@ -16,7 +17,8 @@ default serwerownia_otwarta = False
 default generator_otwarty= False
 
 ## ----TŁA---------
-image bg start ="pokoj1"
+image bg PokojStartowy ="pokoj1"
+image bg PokojStartowybezswiatla ="pokoj1_no"
 image bg Korytarz ="Korytarz_no_light"
 image bg stolowka ="stoufka"
 image bg apteka1 ="apteka"
@@ -39,7 +41,7 @@ define apple_item = Item("Jabłko", "apple_idle", "apple_hover")
 
 # ----- START GRY--------
 label start:
-    scene bg start 
+    scene bg PokojStartowy 
 
     "Budzi cię potworny ból głowy. Wokół panuje półmrok, a powietrze pachnie stęchlizną i metalem."
     "Próbujesz wstać, ale przez silne zawroty głowy, twoje ciało odmawia posłuszeństwa"
@@ -62,21 +64,21 @@ label start:
             show hero_wkurw at left   
             ja "Kim jesteś! i co ja tu robie??!"
             hide hero_wkurw
-            show NormalnaMina at left
+            show hero_podstawowy at left
             r "wyluzuuj! bo ci żyłka pęknie"
             r"Jak powiedziałem jestem i nazywam się Pan Radio"
             r"jak chcesz mogę być również Panią"
             hide radio
-            show pani at right 
+            show PaniRaddio at right 
             r"Widzisz mam wiele wcieleń"
             r"Ha ha ha ha"
-            hide pani 
+            hide PaniRaddio 
             show radio at right
             
         "(Milcz)":  
             ja "Huuuh...?"
             hide hero_poczatek
-            show hero_wystraszony at left
+            show hero_podstawowy at left
             
     #Kod tutaj wykonuje się po zakończeniu wyboru
     r "W każdym razie, cieszę się, że tu jesteś."
@@ -90,8 +92,34 @@ label start:
     r "Eksploruj. Kombinuj. I na litość boską, nie dotykaj czerwonych przycisków......"
     hide radio    
     ja "Psia mać! muszę coś wykombinować bo oszaleje.."
-    "Drzwi są zamknięte."
-    hide NormalnaMina
+    hide hero_podstawowy
+    "słyszysz jak coś buczy po za twoim pomieszczniem, zaczynają mrugać światła i po chwili kompletnie gasną"
+    scene bg PokojStartowybezswiatla
+    show hero_wkurw at left
+    ja "Świetnie jeszcze tego brakowało.."
+    hide hero_wkurw 
+    
+    menu:
+        "Co robisz?"
+        "Otwórz drzwi" :
+            "Pchasz z całej siły, lecz tylko lekko się poruszają"
+            show hero_poczatek
+            ja "Kurde potrzebuje jakiegoś narzedzia.."
+            hide hero_poczatek
+            show hero_wkurw
+            ja "ale tak tu kurwa ciemno że nic niewidzę"
+            hide hero_wkurw
+            
+        "poszukaj pod łóżkiem":  
+            if(ma_latarke == False):
+                "próbujesz wypatrzeć co kolwiek ale nic nie widzisz"
+        "podejdź do szafki":
+            "powoli podchodzisz do szafki, zauważasz na niej latarkę"
+            show hero_podstawowy2 at left
+            ja "Super! wkońcu coś przydatnego"
+            hide hero_podstawowy2
+
+    
 
 
     
