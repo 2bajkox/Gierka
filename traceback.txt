@@ -1,46 +1,23 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
 While running game code:
-NameError: name 'radio' is not defined. Did you mean: 'audio'?
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "game/script.rpy", line 56, in script
-    radio "Och... Chcesz o tym porozmawiać?"
-Exception: Sayer 'radio' is not defined.
+  File "game/script.rpy", line 118, in script
+    jump menu
+renpy.script.LabelNotFound: could not find label 'menu'.
 
 -- Full Traceback ------------------------------------------------------------
 
 Traceback (most recent call last):
-  File "renpy/ast.py", line 625, in eval_who
-    return renpy.python.py_eval(who)
-           ~~~~~~~~~~~~~~~~~~~~^^^^^
-  File "renpy/python.py", line 1292, in py_eval
-    return py_eval_bytecode(code, globals, locals)
-           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
-  File "renpy/python.py", line 1285, in py_eval_bytecode
-    return eval(bytecode, globals, locals)
-           ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<none>", line 1, in <module>
-NameError: name 'radio' is not defined. Did you mean: 'audio'?
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "game/script.rpy", line 56, in script
-    radio "Och... Chcesz o tym porozmawiać?"
-  File "renpy/ast.py", line 2915, in execute
-    Say.execute(self)
-    ~~~~~~~~~~~^^^^^^
-  File "renpy/ast.py", line 956, in execute
-    who = eval_who(self.who, self.who_fast)
-          ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "renpy/ast.py", line 627, in eval_who
-    raise Exception("Sayer '%s' is not defined." % who)
-Exception: Sayer 'radio' is not defined.
+  File "game/script.rpy", line 118, in script
+    jump menu
+  File "renpy/ast.py", line 1928, in execute
+    rv = renpy.game.script.lookup(target)
+         ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "renpy/script.py", line 1161, in lookup
+    raise LabelNotFound(original)
+renpy.script.LabelNotFound: could not find label 'menu'.
 
 Windows-11-10.0.26100-SP0 AMD64
 Ren'Py 8.4.1.25072401
 PROJEKT ARKA 
-Sun Dec  7 18:57:27 2025
+Sun Dec  7 21:41:45 2025
