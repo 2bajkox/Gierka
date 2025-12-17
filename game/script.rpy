@@ -56,139 +56,204 @@ label start:
 
 #------------------------------------------------------------Scena Pierwsza Gdy Gracz zaczyna gre-----------------------------------------------------
     label początek_gry:
-        scene bg PokojStartowy 
-        "Budzi cię potworny ból głowy. Wokół panuje półmrok, a powietrze pachnie stęchlizną i metalem."
-        "Próbujesz wstać, ale twoje ciało odmawia posłuszeństwa"
-        "Wydaje ci się że słyszysz znajomy głos, ale nic ci nie jesteś wstanie sobie nic przypomieć"
-        "Haloo, haloo???"
-        ## play sound "audio/blablabla.ogg" #dzwięk zgaszenia światła
-        show radio at right
-        r "Odbiór. Raz, dwa, trzy. Czy ten kawał mięsa jeszcze funkcjonuje?"
-        show hero_poczatek at left
-        ja "Kto... Kto mówi? Gdzie ja jestem?!"
-        r "Och. Wspaniale! Funkcje życiowe w normie, ale widzę usterkę w twojej pamięci..."
-        r "Chyba za mocno ci wtedy przyjebałem.. No nic"
-        r "Witaj w Bunkrze ... . Jestem Pan Radio. Twoim jedynym i ostatnim przyjacielem."
+    # Ustawienie czarnego tła na start dla budowania napięcia
+    scene black with dissolve
+    stop music fadeout 2.0
+    
+    "Budzi cię tępy, pulsujący ból z tyłu czaszki. Próbujesz otworzyć oczy, ale powieki są ciężkie jak ołów."
+    "W ustach czujesz metaliczny posmak krwi i stęchliznę."
+    "Próbujesz się podnieść. Mięśnie drżą, odmawiając posłuszeństwa. Jesteś słaby... Zbyt słaby."
+    
+    scene bg PokojStartowy with fade
+    
+    "Wokół panuje półmrok. Zarysy mebli są niewyraźne, obce."
+    "Wydaje ci się, że słyszysz znajomy głos, dobiegający zewsząd i znikąd zarazem. Pamięć jest czarną dziurą."
+    
+    # Efekt dźwiękowy włączenia głośników/interferencji
+    # play sound "audio/static_noise_start.ogg" 
+    
+    "???" "Haloo... Odbiór...?"
+    "???" "Kalibracja w toku. Raz... Dwa... Trzy..."
+    
+    show radio at right with easeinright
+    r "Czy ten zlepek tkanki organicznej wreszcie funkcjonuje?"
+    
+    show hero_poczatek at left with dissolve
+    ja "Kto... Kto tam jest? Gdzie ja jestem?!"
+    
+    r "Och, wspaniale! Funkcje życiowe w dolnej granicy normy, ale aktywność kory mózgowej... cóż, pozostawia wiele do życzenia."
+    r "Widzę usterkę w sektorze pamięci. Reset systemu musiał być bardziej... inwazyjny niż zakładałem."
+    r "Witaj w Bunkrze. Jestem Pan Radio. Twój jedyny przyjaciel, nadzorca i... być może sędzia."
+
     label Choice:   
         menu:
             " "
-            "Odpowiesz na moje pytanie?!" :
+            "Odpowiesz na moje pytanie?!":
                 hide hero_poczatek
-                show hero_wkurw at left                            # <------- Bohater ???
-                ja "Kim jesteś! i co ja tu robie??!"
-                hide hero_wkurw
-                show hero_podstawowy at left                            # <------- Bohater ???                    
-                r "wyluzuuj! bo ci żyłka pęknie"
-                r"Jak powiedziałem jestem i nazywam się Pan Radio"
-                r"jak chcesz mogę być również Panią"
-                hide radio
-                show PaniRaddio at right                            # <----- Niedziała 
-                r"Widzisz mam wiele wcieleń"
-                r"Ha ha ha ha"
-                hide PaniRaddio 
-                show radio at right
+                show hero_wkurw at left
+                ja "Pytam kim jesteś i co ja tu do cholery robię?!"
                 
-            "(Milcz)":  
-                ja "Huuuh...?"
+                hide hero_wkurw
+                show hero_podstawowy at left
+                
+                r "Adrenalina rośnie. Puls przyspiesza. Fascynujące, ale bezcelowe."
+                r "Powiedziałem wyraźnie: jestem Pan Radio. Jestem głosem w ścianach."
+                r "Mogę być kim zechcę, ale dla ciebie jestem Bogiem tego małego, betonowego świata."
+                r "Nie irytuj mnie. Sprzężenie zwrotne bywa bolesne."
+               
+            "(Milcz i rozglądaj się)":  
+                ja "..."
+                "Rozglądasz się nerwowo, szukając źródła głosu, ale głośniki są ukryte głęboko w rdzewiejących ścianach."
+                
                 hide hero_poczatek
-                show hero_podstawowy at left                             # <------- Bohater ???
+                show hero_podstawowy at left
             
-        r "W każdym razie, cieszę się, że tu jesteś."
-        r "Sytuacja jest prosta: drzwi są zamknięte, tlen się kończy a ja się nudzę. Wyjdź stąd, zanim zginiesz."
-        r "A właśnie jak ci tam było?"
-        $ player_name = renpy.input("Jak masz na imię? ", length=15).strip()
-        if player_name == "":
-            $ player_name = "hero"
-        ja "Możesz na mnie mówić [player_name]"
-        ja "Właśnie jak mam stąd wyjść"
-        r "Eksploruj. Kombinuj. I na litość boską, nie dotykaj czerwonych przycisków......"
-        hide radio    
-        ja "Psia mać! muszę coś wykombinować bo oszaleje.."
-        hide hero_podstawowy
-        "słyszysz jak coś buczy po za twoim pomieszczniem, zaczynają mrugać światła i po chwili kompletnie gasną"
-#-----------------Tło się zmienia na brak światła---------
-        scene bg PokojStartowybezswiatla
-        show hero_wkurw at left
-        ja "Świetnie jeszcze tego brakowało.."
-        hide hero_wkurw 
+    r "W każdym razie, cieszę się, że odzyskałeś przytomność. Statystyki przeżywalności właśnie drgnęły w górę."
+    r "Sytuacja jest prosta: drzwi są zaryglowane, system wentylacji... powiedzmy, że ma gorszy dzień, a tlenu ubywa."
+    r "Musisz stąd wyjść, zanim udusisz się we własnych wyziewach. Proste, prawda?"
+    r "A właśnie... Jak mam opisać ten obiekt w raporcie? Jak się nazywasz?"
+
+    $ player_name = renpy.input("Wpisz swoje imię: ", length=15).strip()
+    if player_name == "":
+        $ player_name = "Obiekt Zero"
     
-#-----------------------------------Pierwsza "Zagadka" w grze dzięki niej gracz otrzymuje latarkę i łom-------------------------------------
+    ja "Nazywam się... [player_name]."
+    ja "Jak mam stąd wyjść? Drzwi nie mają klamki!"
+    
+    r "Użyj tego, co zostało ci między uszami. Eksploruj. Imrowizuj. Przetrwaj."
+    r "I mała rada: unikaj czerwonych stref. Chyba że lubisz zapach smażonego mięsa."
+    
+    hide radio with easeoutright    
+    
+    ja "Cholera jasna... Muszę się stąd wydostać, zanim oszaleję."
+    
+    hide hero_podstawowy
+    
+    # Dźwięk awarii zasilania
+    # play sound "audio/power_down.ogg"
+    
+    "Nagle słyszysz głośne buczenie transformatora gdzieś za ścianą. Światła zaczynają migotać, by po chwili zgasnąć całkowicie."
+    
+    scene bg PokojStartowybezswiatla
+    
+    "Zostajesz w absolutnej ciemności."
+    
+    show hero_wkurw at left
+    ja "Świetnie... Po prostu świetnie."
+    hide hero_wkurw 
+    
+    #-----------------------------------PĘTLA ZAGADKI-------------------------------------
+    
     label Pokój_startowy_zagadka:
         menu:
             "Co robisz?"
-            "Otwórz drzwi" :
-                if(ma_lom == False):
-                    "Pchasz z całej siły, lecz tylko lekko się poruszają"
-                    show hero_poczatek
-                    ja "Kurde potrzebuje jakiegoś narzedzia.."
+            
+            "Spróbuj otworzyć drzwi":
+                if ma_lom == False:
+                    "Pchasz drzwi z całej siły, zapierając się nogami o podłogę. Ani drgną. Są ciężkie, pancerne."
+                    show hero_poczatek at left
+                    ja "Bez szans. Potrzebuję dźwigni, jakiegoś narzędzia..."
                     hide hero_poczatek
-                    if(ma_latarke == False):
-                        show hero_wkurw
-                        ja "ale tak tu kurwa ciemno że nic nie widzę"
+                    
+                    if ma_latarke == False:
+                        show hero_wkurw at left
+                        ja "Jest tu tak ciemno, że nie widzę własnych rąk. Muszę znaleźć źródło światła."
                         hide hero_wkurw
                     else:
-                        "zauważasz niewielką szczelinę. Dzięki niej mógłbyś podważyć drzwi"
+                        "Światło latarki pada na framugę. Zauważasz, że zawiasy są skorodowane. Wystarczy coś, czym można je podważyć."
+                    
                     jump Pokój_startowy_zagadka
+                
                 else:
-                    "wpychasz łom w szczeline i gwałtownie ciągniesz "
-                    "zamek od dzrzwi pod naporem się łamie!"
+                    "Wsuwasz łom w szczelinę między drzwiami a framugą. Metal zgrzyta przeraźliwie."
+                    "Napierasz całym ciężarem ciała. Rdza puszcza z głośnym trzaskiem."
+                    
                     show hero_szczesliwy at left
-                    ja "Pora iść dalej!"
+                    ja "Mamy to!"
                     hide hero_szczesliwy
+                    
                     jump korytarz_wyjscie_z_pokoju
+
             "Zajrzyj pod łóżko":  
-                if(ma_latarke == False):
-                    "próbujesz wypatrzeć cokolwiek ale nic nie widzisz"
+                if ma_latarke == False:
+                    "Klękasz i macasz ręką w ciemności pod łóżkiem. Dotykasz czegoś lepkiego i kurzu, ale nic nie widzisz."
+                    ja "Nic z tego. Potrzebuję światła."
                 else:
-                    if (ma_lom == False):
-                        "Gdy spoglądasz pod łóżkiem światło latarki odbija światło coś metalowego"
-                        "Ku lekkiemu zdziwieniu znalazłeś łom"
+                    if ma_lom == False:
+                        "Kierujesz strumień światła pod brudny materac. Coś odbija blask."
+                        "Sięgasz głębiej i wyciągasz ciężki, zardzewiały łom."
+                        
                         $ backpack.add(przedmiot_lom, 0, 0)
                         $ ma_lom = True
+                        
                         show hero_podstawowy2 at left
-                        ja "Wkońcu będę mógł wyjść"
+                        ja "Solidny kawał żelastwa. Może posłużyć jako klucz... albo broń."
                         hide hero_podstawowy2
                     else:
-                        "Gdy jeszcze raz spoglądasz pod łóżko.. "
-                        "zauważasz rozkładające się ciało szczura"
-                        "Gdy go zauważyłeś równiez poczułeś odór stęchlizny"
+                        "Ponownie oświetlasz przestrzeń pod łóżkiem."
+                        "Dostrzegasz wyschnięte truchło szczura wciśnięte w kąt. Jego małe zęby są wyszczerzone w wiecznym grymasie."
+                        
                         show hero_dziwny at left
-                        ja "Fuj..."
-                        ja " I ja pod tym spałem cały czas?? "
-                        ja " nic dziwnego że boli mnie głowa..."
+                        ja "Obrzydlistwo..."
+                        ja "Czy ja spałem nad tym czymś? Nic dziwnego, że boli mnie głowa..."
                         hide hero_dziwny
+                
                 jump Pokój_startowy_zagadka     
-            "podejdź do szafki":
-                if (ma_latarke == True):
-                    "Szafka jest pusta. Już zabrałeś stąd latarkę."
+
+            "Przeszukaj szafkę nocną":
+                if ma_latarke == True:
+                    "Szafka jest pusta. Zabrałeś już wszystko, co było w środku."
                     jump Pokój_startowy_zagadka
                 else:
-                    "powoli podchodzisz do szafki"
-                    "Gdy ją otworzyłeś wypadła z niej latarka"
+                    "Podchodzisz po omacku do szafki. Twoje palce trafiają na chłodny metal."
+                    "Otwierasz szufladę. Coś ciężkiego turla się w twoją stronę."
+                    "To latarka. Klikasz włącznik – działa! Snop bladego światła przecina ciemność."
+                    
                     $ backpack.add(przedmiot_latarka, 0, 0)
                     $ ma_latarke = True
+                    
                     show hero_podstawowy2 at left
-                    ja "Super! W końcu coś przydatnego."
+                    ja "Nareszcie coś widzę."
                     hide hero_podstawowy2
+                
                 jump Pokój_startowy_zagadka
-# ----------------------------------------------Scena Druga kiedy Gracz wyjdzie z Pokoju-------------------------------------------------
-    label korytarz_wyjscie_z_pokoju:
-        scene bg Korytarz_no_light
-        "Po otawrciu tych zardzewiałych drzwi, odbija się głośne echo wraz z nim odezwał sie... "
-        show radio at right
-        r "No wkońcu..."
-        r "Dłużej się nie dało..?"
-        r "ile można było czekac... Klamki nie umiesz pociągnąć!?"
-        ja "ale.. niebyło kla-"
-        r "DOBRA słuchaj niema nic do stracenia potrzbujemy zasilania do serwerowni"
-        menu:
-            " "
-            "po co?" :
-                r "???"
-                r "a twoja koścista dupa chciała by stad wyjść?!"
-            "...":
-                ja "..."
-        r "tak myśle!"
-        r "w drogę! Miernoto!"
 
+# ----------------------------------------------SCENA DRUGA: KORYTARZ-------------------------------------------------
 
+label korytarz_wyjscie_z_pokoju:
+    scene bg Korytarz_no_light with wipeleft
+    
+    "Drzwi ustępują z jękiem. Wychodzisz na korytarz. Echo twoich kroków niesie się w nieskończoność."
+    "Głośniki w korytarzu budzą się do życia z cichym trzaskiem."
+    
+    show radio at right
+    r "Brawo. Pierwszy test inteligencji zaliczony."
+    r "Szczerze? Obstawiałem, że umrzesz z głodu wpatrując się w klamkę."
+    r "Ale nie świętuj jeszcze. To dopiero przedsionek."
+    
+    ja "Zamknij się. Co teraz?"
+    ja "Dlaczego nie ma zasilania?"
+    
+    r "Bystrzak. Zasilanie główne padło dekady temu. Działamy na oparach."
+    r "Musisz dostać się do serwerowni i zrestartować generator. Potrzebujemy energii."
+    
+    menu:
+        " "
+        "Po co ci energia?":
+            r "A po co tobie tlen?"
+            r "Bez energii systemy podtrzymywania życia ostatecznie padną. Twoja koścista dupa zostanie tu na zawsze."
+            r "Jako eksponat."
+        
+        "(Milcz)":
+            ja "..."
+            r "Milczenie jest złotem, ale działanie jest życiem."
+    
+    r "Ruszaj się, [player_name]. Zegar tyka."
+    r "I uważaj na cienie. Czasem... mają zęby."
+    
+    hide radio
+    
+    "Korytarz ciągnie się w mrok. Ściskasz łom w dłoni tak mocno, że bieleją ci knykcie."
+    
+    # Koniec demo lub przejście dalej
+    return
