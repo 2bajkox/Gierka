@@ -982,7 +982,7 @@ screen stol_zblizenie():
                 hover "images/item_smiec_hover.png"
                 focus_mask True
                 action [
-                    play sound "audio/podnosic.ogg" fadein 1.0
+                    Play("sound", "audio/podnosic.ogg",),
                     SetVariable("smieci_sprzatniete", True), SetVariable("narzedzia_odlozone", narzedzia_odlozone + 1), Jump("odlozenie_narzedzia")]
                 hovered SetVariable("interakcja_tooltip", "POSPRZĄTAJ SKRZYNKĘ")
                 unhovered SetVariable("interakcja_tooltip", "")
@@ -995,7 +995,7 @@ screen stol_zblizenie():
                 hover "images/item_kloc_hover.png"
                 focus_mask True
                 action [
-                    play sound "audio/podnosic.ogg" fadein 1.0
+                    Play("sound", "audio/podnosic.ogg",),
                     SetVariable("kloc_sprzatniety", True), SetVariable("narzedzia_odlozone", narzedzia_odlozone + 1), Jump("odlozenie_narzedzia")]
                 hovered SetVariable("interakcja_tooltip", "UPRZĄTNIJ ŚMIECI")
                 unhovered SetVariable("interakcja_tooltip", "")
@@ -1008,7 +1008,7 @@ screen stol_zblizenie():
                 hover "images/item_narzedzia_hover.png"
                 focus_mask True
                 action [
-                    play sound "audio/podnosic.ogg" fadein 1.0
+                    Play("sound", "audio/podnosic.ogg",),
                     SetVariable("narzedzia_sprzatniete", True), SetVariable("narzedzia_odlozone", narzedzia_odlozone + 1), Jump("odlozenie_narzedzia")]
                 hovered SetVariable("interakcja_tooltip", "ODŁÓŻ NARZĘDZIA")
                 unhovered SetVariable("interakcja_tooltip", "")
@@ -1024,7 +1024,9 @@ screen stol_zblizenie():
                 idle "images/pudlo_generator_idle.png"
                 hover "images/pudlo_generator_hover.png"
             focus_mask True
-            action Show("pudlo_zblizenie") 
+            action [
+                Play("sound", "audio/darek_otworz.ogg",),
+                Show("pudlo_zblizenie")] 
             hovered SetVariable("interakcja_tooltip", "OTWÓRZ PUDŁO")
             unhovered SetVariable("interakcja_tooltip", "")
 
@@ -1054,9 +1056,7 @@ screen pudlo_zblizenie():
             idle "images/karta_medyczna_idle.png"
             hover "images/karta_medyczna_hover.png"
             focus_mask True
-            action [
-                Play("sound", "audio/darek_otworz.ogg",),
-                SetVariable("interakcja_tooltip", ""), Hide("pudlo_zblizenie"), Jump("akcja_znalezienia_karty")]
+            action [SetVariable("interakcja_tooltip", ""), Hide("pudlo_zblizenie"), Jump("akcja_znalezienia_karty")]
             hovered SetVariable("interakcja_tooltip", "WEŹ KARTĘ DOSTĘPU")
             unhovered SetVariable("interakcja_tooltip", "")
 
