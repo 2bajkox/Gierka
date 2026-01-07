@@ -981,7 +981,9 @@ screen stol_zblizenie():
                 idle "images/item_smiec.png" 
                 hover "images/item_smiec_hover.png"
                 focus_mask True
-                action [SetVariable("smieci_sprzatniete", True), SetVariable("narzedzia_odlozone", narzedzia_odlozone + 1), Jump("odlozenie_narzedzia")]
+                action [
+                    play sound "audio/podnosic.ogg" fadein 1.0
+                    SetVariable("smieci_sprzatniete", True), SetVariable("narzedzia_odlozone", narzedzia_odlozone + 1), Jump("odlozenie_narzedzia")]
                 hovered SetVariable("interakcja_tooltip", "POSPRZĄTAJ SKRZYNKĘ")
                 unhovered SetVariable("interakcja_tooltip", "")
 
@@ -992,7 +994,9 @@ screen stol_zblizenie():
                 idle "images/item_kloc.png"
                 hover "images/item_kloc_hover.png"
                 focus_mask True
-                action [SetVariable("kloc_sprzatniety", True), SetVariable("narzedzia_odlozone", narzedzia_odlozone + 1), Jump("odlozenie_narzedzia")]
+                action [
+                    play sound "audio/podnosic.ogg" fadein 1.0
+                    SetVariable("kloc_sprzatniety", True), SetVariable("narzedzia_odlozone", narzedzia_odlozone + 1), Jump("odlozenie_narzedzia")]
                 hovered SetVariable("interakcja_tooltip", "UPRZĄTNIJ ŚMIECI")
                 unhovered SetVariable("interakcja_tooltip", "")
 
@@ -1003,7 +1007,9 @@ screen stol_zblizenie():
                 idle "images/item_narzedzia.png"
                 hover "images/item_narzedzia_hover.png"
                 focus_mask True
-                action [SetVariable("narzedzia_sprzatniete", True), SetVariable("narzedzia_odlozone", narzedzia_odlozone + 1), Jump("odlozenie_narzedzia")]
+                action [
+                    play sound "audio/podnosic.ogg" fadein 1.0
+                    SetVariable("narzedzia_sprzatniete", True), SetVariable("narzedzia_odlozone", narzedzia_odlozone + 1), Jump("odlozenie_narzedzia")]
                 hovered SetVariable("interakcja_tooltip", "ODŁÓŻ NARZĘDZIA")
                 unhovered SetVariable("interakcja_tooltip", "")
 

@@ -65,7 +65,7 @@ define config.sample_sound = "audio/blablabal.ogg"
 ## Odkomentuj następującą linię, aby ustawić plik audio, który będzie
 ## odtwarzany, gdy odtwarzacz jest w menu głównym. Ten plik będzie odtwarzany w
 ## grze, dopóki nie zostanie zatrzymany lub odtworzony inny plik.
-define config.main_menu_music = "audio/Muzyka_Menu.ogg"
+define config.main_menu_music = "audio/Muzyka_Menu.ogg" volume 0.5
 
 
 ## Przejście ###################################################################
