@@ -100,7 +100,7 @@ label start:
 #endregion START
     label początek_gry:
         stop music 
-        play music "audio/muzyka_cela.ogg" fadein 5.0
+        play music "audio/muzyka_cela.ogg" fadein 5.0 volume 0.2 
         "Ciemność. Absolutna, aksamitna ciemność."
         "Nie czujesz ciężaru ciała ani upływu czasu, jest bezpiecznie?"
         "Nagle pojawia się niepokój. Ołowiany chłód przenika od opuszków palców w górę ramion."
@@ -130,7 +130,7 @@ label start:
         stop music
     
         #---------------------DZWIEK TRZASK KONIEC
-        play music "audio/muzyka_cela.ogg" fadein 2.0
+        play music "audio/muzyka_cela.ogg" fadein 2.0 volume 0.2
         show radio at right with easeinright
         r "O, wreszcie. Sygnał czysty. Witamy w świecie żywych."
         "Głos jest nienaturalny, syntetyczny, kompletnie niezrozumiały."
@@ -262,7 +262,7 @@ label start:
     
         ja "Zjadło?! Halo! Wracaj tu!"
         hide hero_wystraszony2 
-        play sound "audio/gen_off.ogg"  
+        play sound "audio/gen_off.ogg" volume 0.2 
         hide hero_podstawowy
         "Gasną światła i zamiera odgłos pracujących z dala turbin generatora."
         "Nastała cisza"
@@ -436,7 +436,7 @@ label Otwórz_drzwi:
             "W świetle latarki dostrzegasz, że framuga jest lekko wygięta. Gdybym miał czym podważyć te drzwi..."
         call screen Pokój_startowy_zagadka
     else:
-        play sound "audio/wypierdalanie_drzwi.ogg"
+        play sound "audio/wypierdalanie_drzwi.ogg" volume 0.2
         "Wbijasz łom w szczelinę. Metal zgrzyta przeraźliwie, aż w końcu zamek pęka z głośnym trzaskiem."
         show hero_szczesliwy 
         ja "Droga wolna. Zamek i tak był ledwo żywy."
@@ -470,7 +470,7 @@ label powrot_do_korytarza:
 
 label korytarz_wyjscie_z_pokoju:
     scene bg Korytarz_no_light
-    play music "audio/muzyka_cela.ogg" fadein 3.0
+    play music "audio/muzyka_cela.ogg" fadein 3.0 volume 0.3
     "Echo Twoich kroków brzmi tu obco. Z głośników dobiega suchy trzask, przypominający kaszel starego palacza."
     show radio at right
 
@@ -1108,7 +1108,7 @@ label interakcja_generator_maszyna:
         "Generator mruczy miarowo, wypełniając halę niskim buczeniem."
     elif ma_bezpiecznik:
         "Wsuwasz bezpiecznik w gniazdo. Maszyna zaskakuje z rykiem."
-        play sound "audio/gen_on.ogg"
+        play sound "audio/gen_on.ogg" volume 0.3
         $ prad_wlaczony = True
         "Zasilanie przywrócone."
         show radio
@@ -1145,7 +1145,8 @@ label szpital_label:
         $ ktora_apteczka_ma_bezpiecznik = renpy.random.randint(1, 3) 
         $ szpital_otwarty_odwiedzony = True
         
-        play music "audio/muzyka_gen.ogg" fadeout 1.0
+        play music "audio/muzyka_gen.ogg" fadeout 1.0 volume 0.2
+    
         "Syk rygli magnetycznych przecina ciszę. Drzwi rozsuwają się z oporem."
         "W nozdrza uderza cię odór ozonu, zaschniętej krwi i silnych środków odkażających."
         
@@ -1402,6 +1403,7 @@ label jadalnia_label:
     # --- DIALOG NA WEJŚCIE ---
     if not jadalnia_odwiedzona:
         $ jadalnia_odwiedzona = True
+        play music "audio/muzyka_gdzies.ogg" fadein 2.0 volume 0.5
         "Powietrze w jadalni jest gęste, słodkawe. Zapach zepsutego mięsa miesza się z chemiczną wonią napojów gazowanych."
         
         show hero_poczatek at left with dissolve
@@ -1411,6 +1413,7 @@ label jadalnia_label:
         r "Ironia losu."
         hide radio
         hide hero_poczatek
+    
 
         menu:
             "Co oni jedli?":
@@ -1420,11 +1423,13 @@ label jadalnia_label:
                 r "Syntetyczne białko. Smakowało jak tektura, ale trzymało przy życiu. Dopóki coś innego nie zaczęło ich zjadać."
                 hide radio
                 hide hero_podstawowy
+                
             
             "Ignoruj jedzenie, szukaj wyjścia":
                 show hero_podstawowy
                 ja "Nieważne. Nie jestem głodny."
                 hide hero_podstawowy
+                
 
         if not prad_wlaczony:
             show hero_podstawowy at left
@@ -1433,6 +1438,8 @@ label jadalnia_label:
             r "Bez prądu ten automat to tylko trumna dla batoników. Włącz zasilanie, a może dostaniesz nagrodę."
             hide hero_podstawowy
             hide radio
+            stop music fadeout 1.5
+            
         else:
             "Automat w rogu buczy zachęcająco, rozświetlając mrok jaskrawym, toksycznym neonem 'Vim!'."
             show radio at right
@@ -1442,10 +1449,13 @@ label jadalnia_label:
             ja "Brakuje jeszcze tego bym zaczął świecić na kolorowo..."
             hide radio
             hide hero_dziwny
+            stop music fadeout 1.5
+        
             
         hide hero_poczatek
         hide radio
 
+    
     call screen Jadalnia_Interakcje
 
 # -------------------------------------------------------------------------
@@ -1717,6 +1727,7 @@ label automat_uzycie_zetonu:
 # -------------------------------------------------------------------------
 label serwerownia_label:
     if not serwerownia_otwarta:
+        play music "audio/muzyka_serwer.ogg" fadein 1.0 volume 0.2
         "Drzwi są zablokowane elektronicznie. Czytnik kart świeci na czerwono."
         jump powrot_do_korytarza
 
@@ -1726,6 +1737,7 @@ label serwerownia_label:
         scene bg serwerownia_no with fade
 
     if not serwerownia_naprawiona:
+        play music "audio/muzyka_serwer.ogg" fadein 1.0 volume 0.2 
         if hack_progress == 0: 
             "Wchodzisz do serca placówki. Powietrze jest tu lodowate."
             show hero_podstawowy at left with easeinleft
@@ -1734,6 +1746,7 @@ label serwerownia_label:
             r "Witaj w domu. To tutaj odkryjesz całą prawde."
             hide hero_podstawowy
             hide radio
+            stop music fadeout 1.0
 
     call screen Serwerownia_Interakcje
 
@@ -2164,11 +2177,13 @@ label zbrojownia_naprawa_panelu:
     "Otwierasz panel. Widzisz przecięte kable."
     menu:
         "Złącz czerwony przewód z niebieskim":
+            play music "audio/trzask.ogg" fadein 0.5
             "Błąd! Iskry sypią ci się na ręce."
+            stop music fadeout 1
             jump zbrojownia_naprawa_panelu
             
         "Zmostkuj żółty przewód (Data)":
-            play sound "audio/power_up.ogg"
+            play sound "audio/haker_gra.ogg"
             "Panel świeci na zielono. Kraty zbrojowni domykają się."
             $ systemy_obronne_aktywne = True
             show arek 
@@ -2379,7 +2394,7 @@ screen Minigame_Rifle_Attack():
         at boss_shake_attack # Boss się trzęsie i rośnie
         action [
             SetVariable("boss_hp", boss_hp - 4),
-            Play("sound", "audio/karabin_strzal.ogg"), 
+            Play("sound", "audio/karabin_strzał.ogg"), 
             If(boss_hp <= 0, Return("win"))
         ]
 
@@ -2583,10 +2598,7 @@ label zakonczenie_zostan:
     r "Doskonały wybór, [player_name]. Wiedziałam, że moduł logiczny w Twoim mózgu w końcu przejmie kontrolę."
     hide arek 
     hide hero_podstawowy
-
-    play sound "audio/door_lock.ogg"
     scene bg drzwi_wyjsciowe with dissolve
-    
     "Słyszysz ciężki dźwięk ryglowania drzwi. Dźwięk, który oddziela cię od śmierci... i od świata."
     "Światła w korytarzu zmieniają barwę na kojący, sterylny błękit."
     show arek

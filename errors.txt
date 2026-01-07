@@ -2,9 +2,13 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 2313: Line is indented, but the preceding scene statement statement does not expect a block. Please check this line's indentation. You may have forgotten a colon (:).
-    show bg Korytarz_no_light
+File "game/script.rpy", line 1756: screen expects a non-empty block.
+    screen Serwerownia_Interakcje():
+                                    ^
+
+File "game/script.rpy", line 1758: Line is indented, but the preceding play music statement statement does not expect a block. Please check this line's indentation. You may have forgotten a colon (:).
+    use plecak_ikona
     ^
 
 Ren'Py Version: Ren'Py 8.4.1.25072401
-Wed Jan  7 18:12:34 2026
+Wed Jan  7 20:46:53 2026
