@@ -1054,7 +1054,9 @@ screen pudlo_zblizenie():
             idle "images/karta_medyczna_idle.png"
             hover "images/karta_medyczna_hover.png"
             focus_mask True
-            action [SetVariable("interakcja_tooltip", ""), Hide("pudlo_zblizenie"), Jump("akcja_znalezienia_karty")]
+            action [
+                Play("sound", "audio/darek_otworz.ogg",),
+                SetVariable("interakcja_tooltip", ""), Hide("pudlo_zblizenie"), Jump("akcja_znalezienia_karty")]
             hovered SetVariable("interakcja_tooltip", "WEŹ KARTĘ DOSTĘPU")
             unhovered SetVariable("interakcja_tooltip", "")
 
