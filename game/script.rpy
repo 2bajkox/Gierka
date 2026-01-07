@@ -87,9 +87,9 @@ image bg tlo_mapa = "tło_mapa"
 #---------------HAKOWANIE SERWEROWNIA
 image bg terminal_hacking = "terminal_hacking_bg"
 #---------------JADALNIOWY STOLIK------
-image bg stolik_zblizenie_bg = "stolik_zblizenie" # Twoje tło zbliżenia na stół
-image monster_boss = "unnamed" # Potwór z głową TV
-image bg apteczka_zblizenie = "apteczka_zblizenie_no"   ######DODAĆ
+image bg stolik_zblizenie_bg = "stolik_zblizenie" 
+image monster_boss = "unnamed" 
+image bg apteczka_zblizenie = "apteczka_zblizenie_no" 
 image bg apteczka_zblizenie_pront = "apteczka_zblizenie"
 image monster_boss_zdech = "unnamed_umar"
 
@@ -97,7 +97,8 @@ label start:
 #region START 
 #endregion START
     label początek_gry:
-        # play music "audio/sleeep.ogg" fadein 2.0
+        stop music 
+        play music "audio/muzyka_cela.ogg" fadein 5.0
         "Ciemność. Absolutna, aksamitna ciemność."
         "Nie czujesz ciężaru ciała ani upływu czasu, jest bezpiecznie?"
         "Nagle pojawia się niepokój. Ołowiany chłód przenika od opuszków palców w górę ramion."
@@ -118,15 +119,16 @@ label start:
         "Surowy beton, rdza i pajęczyny."
         "Zardzewiałe łóżko blokuje drzwi. Wygląda na to, że próbowałeś się tu zabarykadować... przed czymś?"
         "Wszystko tutaj krzyczy, że nie powinieneś tu być."
-
-        # play music "audio/trzask.ogg" fadein 2.0
+        #--------------------DZWIEK TRZASK START
+        play music "audio/trzask.ogg" fadein 2.0
         "Nagle głośny dzwięk trzasków interkomu rozlał się po całym pomieszczeniu. Instynktownie zakrywasz uszy mając w nadziei że nie rozsadzi Ci głowy."
         "HaLoo...?!"
         "OdBiÓr...?"
         "'Odezwij się! Przecież wiem, ZzZzżee tam jesteś!'"
-        # KONIEC DZWIEKU TRZASK
-        # stop music fadeout 2.0
-
+        stop music
+    
+        #---------------------DZWIEK TRZASK KONIEC
+        play music "audio/muzyka_cela.ogg" fadein 2.0
         show radio at right with easeinright
         r "O, wreszcie. Sygnał czysty. Witamy w świecie żywych."
         "Głos jest nienaturalny, syntetyczny, kompletnie niezrozumiały."
@@ -253,16 +255,16 @@ label start:
         ja "Toksyn?! I co tu jeszcze jest oprócz nas?!"
         r "O, mnóstwo rzeczy. Poprzedni lokatorzy byli bardzo zaradni... dopóki coś ich nie zjadło."
         r "Powodzenia w grze 'Nie daj się pożreć'!"
-        hide radio     
+        stop music
+        hide radio
+    
         ja "Zjadło?! Halo! Wracaj tu!"
-        hide hero_wystraszony2
-
-        # play music "audio/generator_wylacza_sie_i_gasno_swiatla.ogg" fadein 2.0  
+        hide hero_wystraszony2 
+        play sound "audio/gen_off.ogg"  
         hide hero_podstawowy
         "Gasną światła i zamiera odgłos pracujących z dala turbin generatora."
         "Nastała cisza"
         "Niepokojąca cisza..."
-        # stop music fadeout 2.0
 
 #-----------------Tło się zmienia na brak światła---------
         scene bg PokojStartowybezswiatla
@@ -299,8 +301,10 @@ screen Pokój_startowy_zagadka():
             hover "images/przedmiot_drzwi_cela_hover.png"
 
         focus_mask True
-        action If(drzwi_cela_wywalone, Jump("powrot_do_korytarza"), Jump("Otwórz_drzwi"))
-
+        action If(
+        drzwi_cela_wywalone,    
+        [Play("sound", "audio/drzwi_otwieranie.ogg"), Jump("powrot_do_korytarza")],
+        Jump("Otwórz_drzwi"))
         hovered If(drzwi_cela_wywalone, SetVariable("interakcja_tooltip", "WYJŚCIE: KORYTARZ"), SetVariable("interakcja_tooltip", "ZAMKNIĘTE DRZWI"))
         unhovered SetVariable("interakcja_tooltip", "")
 
@@ -396,7 +400,9 @@ label brak_swiatla_pod_lozkiem:
 label akcja_zabrania_lomu:
     $ ma_lom = True
     $ backpack.add (przedmiot_lom,0, 0)
+    play sound "audio/podnosic.ogg" fadein 1.0
     "Twoje dłonie zaciskają się na zimnej, stalowej sztabie. Solidny łom."
+    stop sound fadeout 2.0
     show hero_podstawowy
     ja "Może uda mi się nim wyważyć drzwi."
     hide hero_podstawowy
@@ -405,24 +411,30 @@ label akcja_zabrania_lomu:
 label akcja_zabrania_latarki:
     $ ma_latarke = True
     $ backpack.add (przedmiot_latarka,0, 0)
+    play sound "audio/podnosic.ogg" fadein 1.0
     "Podniosłeś latarkę"
+    stop sound fadeout 2.0
     ja "Świetnie, przyda mi się w tym obskurnym miejscu."
     call screen Pokój_startowy_zagadka
 #akcja Drzwi
 label Otwórz_drzwi:
     if drzwi_cela_wywalone:
+        play sound "audio/drzwi_otwieranie.ogg"
         jump korytarz_wyjscie_z_pokoju
     if(ma_lom == False):
         "Napierasz na drzwi całym ciężarem ciała. Ani drgną."
+        play sound "audio/zablokowane.ogg"
         show hero_poczatek
         ja "Zablokowane. Mechanizm jest stary, ale wciąż trzyma."
         hide hero_poczatek
         if(ma_latarke == False):
             ja "Jest zbyt ciemno, żeby znaleźć słaby punkt. Potrzebuję światła."
+            play sound "audio/zablokowane.ogg"
         else:
             "W świetle latarki dostrzegasz, że framuga jest lekko wygięta. Gdybym miał czym podważyć te drzwi..."
         call screen Pokój_startowy_zagadka
     else:
+        play sound "audio/wypierdalanie_drzwi.ogg"
         "Wbijasz łom w szczelinę. Metal zgrzyta przeraźliwie, aż w końcu zamek pęka z głośnym trzaskiem."
         show hero_szczesliwy 
         ja "Droga wolna. Zamek i tak był ledwo żywy."
@@ -456,6 +468,7 @@ label powrot_do_korytarza:
 
 label korytarz_wyjscie_z_pokoju:
     scene bg Korytarz_no_light
+    play music "audio/muzyka_korytarz.ogg" fadein 3.0
     "Echo Twoich kroków brzmi tu obco. Z głośników dobiega suchy trzask, przypominający kaszel starego palacza."
     show radio at right
 
@@ -581,6 +594,7 @@ label korytarz_wyjscie_z_pokoju:
     r "Wchodź, i uważaj. Ciemność w maszynowni bywa okrutna."
     hide radio
     hide hero_podstawowy
+    stop music fadeout 2.0
 
     $ generator_otwarty = True
     $ generator_light = True
@@ -604,8 +618,9 @@ screen Pokój_Korytarz_klikanie():
         else:
             idle "images/przedmiot_drzwi_cela2_ciemne_idle.png"
             hover "images/przedmiot_drzwi_cela2_ciemne_hover.png"
-            
-        action [SetVariable("interakcja_tooltip", ""), Jump("powrot_do_celi")]
+        action [
+            Play("sound", "audio/drzwi_otwieranie.ogg",),
+            SetVariable("interakcja_tooltip", ""), Jump("powrot_do_celi")]
         hovered SetVariable("interakcja_tooltip", "CELA")
         unhovered SetVariable("interakcja_tooltip", "")
 
@@ -629,10 +644,15 @@ screen Pokój_Korytarz_klikanie():
                 hover "images/przedmiot_drzwi_gen_ciemne_zamkniete_hover.png"
 
         if generator_otwarty:
-            action [SetVariable("interakcja_tooltip", ""), Jump("Pomieszczenie_Z_Generatorem_Fab")]
+            
+            action [
+                Play("sound", "audio/drzwi_otwieranie.ogg", ),
+                SetVariable("interakcja_tooltip", ""), Jump("Pomieszczenie_Z_Generatorem_Fab")]
             hovered SetVariable("interakcja_tooltip", "POMIESZCZENIE Z GENERATOREM")
         else:
-            action Jump("drzwi_zablokowane_info")
+            action[
+                Play("sound", "audio/zablokowane.ogg", ),
+                Jump("drzwi_zablokowane_info")]
             hovered SetVariable("interakcja_tooltip", "DRZWI ZABLOKOWANE")
         unhovered SetVariable("interakcja_tooltip", "")
 
@@ -656,12 +676,16 @@ screen Pokój_Korytarz_klikanie():
                 hover "images/przedmiot_drzwi_szpital_ciemne_zamkniete_hover.png"
 
         if szpital_otwarty:
-            action [SetVariable("interakcja_tooltip", ""), Jump("szpital_label")]
+            action [
+                Play("sound", "audio/drzwi_otwieranie.ogg",),
+                SetVariable("interakcja_tooltip", ""), Jump("szpital_label")]
             hovered SetVariable("interakcja_tooltip", "SEKTOR MEDYCZNY")
         else:
-            action Jump("apteka_zablokowana_info")
+            action [
+                Play("sound", "audio/zablokowane.ogg", ),
+                Jump("apteka_zablokowana_info")]
             hovered SetVariable("interakcja_tooltip", "DRZWI ZABLOKOWANE")
-        unhovered SetVariable("interakcja_tooltip", "")
+            unhovered SetVariable("interakcja_tooltip", "")
 
     # --- Drzwi do Jadalni ---
     imagebutton:
@@ -683,10 +707,14 @@ screen Pokój_Korytarz_klikanie():
                 hover "images/przedmiot_drzwi_stoufka_ciemne_zamkniete_hover.png"
 
         if stoufka_otwarta:
-            action [SetVariable("interakcja_tooltip", ""), Jump("jadalnia_label")]
+            action [
+                Play("sound", "audio/drzwi_otwieranie.ogg",),
+                SetVariable("interakcja_tooltip", ""), Jump("jadalnia_label")]
             hovered SetVariable("interakcja_tooltip", "JADALNIA")
         else:
-            action Jump("jadalnia_zablokowana_info")
+            action[
+                Play("sound", "audio/zablokowane.ogg", ),
+                Jump("jadalnia_zablokowana_info")]
             hovered SetVariable("interakcja_tooltip", "DRZWI ZABLOKOWANE")
         unhovered SetVariable("interakcja_tooltip", "")
     
@@ -710,12 +738,16 @@ screen Pokój_Korytarz_klikanie():
                 hover "images/przedmiot_drzwi_serwerownia_ciemne_zamkniete_hover.png"
 
         if serwerownia_otwarta:
-            action [SetVariable("interakcja_tooltip", ""), Jump("serwerownia_label")]
+            action [
+                Play("sound", "audio/drzwi_otwieranie.ogg",),
+                SetVariable("interakcja_tooltip", ""), Jump("serwerownia_label")]
             hovered SetVariable("interakcja_tooltip", "SERWEROWNA")
         else:
-            action Jump("serwerownia_zablokowana_info")
+            action [
+                Play("sound", "audio/zablokowane.ogg", ),
+                Jump("serwerownia_zablokowana_info")]
             hovered SetVariable("interakcja_tooltip", "DRZWI ZABLOKOWANE")
-        unhovered SetVariable("interakcja_tooltip", "")
+            unhovered SetVariable("interakcja_tooltip", "")
     #--- Drzwi do Zbrojowni
     imagebutton:
         xpos 0 ypos 0 
@@ -736,10 +768,14 @@ screen Pokój_Korytarz_klikanie():
                 hover "images/przedmiot_drzwi_zbrojownia_ciemne_zamkniete_hover.png"
 
         if zbrojownia_otwarta:
-            action [SetVariable("interakcja_tooltip", ""), Jump("zbrojownia_start_label")]
+            action [
+                Play("sound", "audio/drzwi_otwieranie.ogg",),
+                SetVariable("interakcja_tooltip", ""), Jump("zbrojownia_start_label")]
             hovered SetVariable("interakcja_tooltip", "ZBROJOWNA")
         else:
-            action Jump("zbrojownia_zablokowana_info")
+            action[
+                Play("sound", "audio/zablokowane.ogg", ),
+                Jump("zbrojownia_zablokowana_info")]
             hovered SetVariable("interakcja_tooltip", "DRZWI ZABLOKOWANE")
         unhovered SetVariable("interakcja_tooltip", "")
 
@@ -867,7 +903,9 @@ screen Generator_Interakcje():
             idle "images/drzwi_na_korytarz_idle.png"
             hover "images/drzwi_na_korytarz_hover.png"
         focus_mask True
-        action [SetVariable("interakcja_tooltip", ""), Jump("powrot_do_korytarza")]
+        action [
+            Play("sound", "audio/drzwi_otwieranie.ogg",),
+            SetVariable("interakcja_tooltip", ""), Jump("powrot_do_korytarza")]
         hovered SetVariable("interakcja_tooltip", "DRZWI DO: KORYTARZA")
         unhovered SetVariable("interakcja_tooltip", "")
 
@@ -1030,6 +1068,7 @@ label odlozenie_narzedzia:
 
 label znalezienie_mapy:
     $ ma_mapa = True
+    play sound "audio/podnosic.ogg"
     show screen przycisk_mapy
     "Dane schematu zostały pobrane do twojej pamięci podręcznej."
     show hero_szczesliwy
@@ -1050,6 +1089,7 @@ label akcja_znalezienia_karty:
     $ apteka = True
     $ szpital_otwarty = True # Flaga otwierająca drzwi w korytarzu
     $ backpack.add (przedmiot_karta,0, 0)
+    play sound "audio/podnosic.ogg" fadein 1.0
     hide radio
     "Wyciągasz z pudełka kartę dostępu."
     show hero_szok at left
@@ -1066,6 +1106,7 @@ label interakcja_generator_maszyna:
         "Generator mruczy miarowo, wypełniając halę niskim buczeniem."
     elif ma_bezpiecznik:
         "Wsuwasz bezpiecznik w gniazdo. Maszyna zaskakuje z rykiem."
+        play sound "audio/gen_on.ogg"
         $ prad_wlaczony = True
         "Zasilanie przywrócone."
         show radio
@@ -1102,6 +1143,7 @@ label szpital_label:
         $ ktora_apteczka_ma_bezpiecznik = renpy.random.randint(1, 3) 
         $ szpital_otwarty_odwiedzony = True
         
+        play music "audio/muzyka_gen.ogg" fadeout 1.0
         "Syk rygli magnetycznych przecina ciszę. Drzwi rozsuwają się z oporem."
         "W nozdrza uderza cię odór ozonu, zaschniętej krwi i silnych środków odkażających."
         
@@ -1112,7 +1154,7 @@ label szpital_label:
         r "Personel medyczny próbował wyciąć infekcję... dosłownie."
         ja "Czego mam szukać!? Nie chcę tu zostać ani minuty dłużej."
         r "Sprawdź zaplecze (drzwi po prawej). Tam trzymali zapasy i... odpady biologiczne."
-
+        stop music fadeout 1.0
         hide hero_poczatek
         hide radio
 
@@ -1139,7 +1181,9 @@ screen Szpital_Pokoj1_Screen():
         else:
             idle "images/strzalka_prawo_bez_swiatla_idle.png" 
             hover "images/strzalka_prawo_bez_swiatla_hover.png"
-        action [SetVariable("interakcja_tooltip", ""), Jump("szpital_pokoj2_label")]
+        action [
+            Play("sound", "audio/drzwi_otwieranie.ogg",),
+            SetVariable("interakcja_tooltip", ""), Jump("szpital_pokoj2_label")]
         hovered SetVariable("interakcja_tooltip", "IDŹ NA ZAPLECZE")
         unhovered SetVariable("interakcja_tooltip", "")
 
@@ -1168,7 +1212,9 @@ screen Szpital_Pokoj1_Screen():
             idle "images/drzwi_wyjsciowe_korytarz_bez_swiatla_idle.png" 
             hover "images/drzwi_wyjsciowe_korytarz_bez_swiatla_hover.png"
 
-        action [SetVariable("interakcja_tooltip", ""), Jump("powrot_do_korytarza")]
+        action [
+            Play("sound", "audio/drzwi_otwieranie.ogg",),
+            SetVariable("interakcja_tooltip", ""), Jump("powrot_do_korytarza")]
         hovered SetVariable("interakcja_tooltip", "POWRÓT NA KORYTARZ")
         unhovered SetVariable("interakcja_tooltip", "")
 
@@ -1248,7 +1294,9 @@ screen Szpital_Pokoj2_Screen():
         else:
             idle "images/strzalka_lewo_bez_swiatla_idle.png" 
             hover "images/strzalka_lewo_bez_swiatla_hover.png"
-        action [SetVariable("interakcja_tooltip", ""), Jump("szpital_label")]
+        action [
+            Play("sound", "audio/drzwi_otwieranie.ogg",),
+            SetVariable("interakcja_tooltip", ""), Jump("szpital_label")]
         hovered SetVariable("interakcja_tooltip", "WRÓĆ")
         unhovered SetVariable("interakcja_tooltip", "")
 
@@ -1291,6 +1339,7 @@ screen Szpital_Apteczka_Screen(nr):
 label akcja_zabrania_bezpiecznika:
     $ ma_bezpiecznik = True
     $ backpack.add(przedmiot_bezpiecznik, 0, 0)
+    play sound "audio/podnosic.ogg" fadein 1.0
     
     "Podnosisz bezpiecznik. Może się przydać."
     show hero_szczesliwy 
@@ -1456,7 +1505,9 @@ screen Jadalnia_Interakcje():
             idle "images/strzalka_wyjscie_na_korytarz_pront_idle.png"
             hover "images/strzalka_wyjscie_na_korytarz_pront_hover.png"
         focus_mask True
-        action [SetVariable("interakcja_tooltip", ""), Jump("powrot_do_korytarza")]
+        action [
+            Play("sound", "audio/drzwi_otwieranie.ogg",),
+            SetVariable("interakcja_tooltip", ""), Jump("powrot_do_korytarza")]
         hovered SetVariable("interakcja_tooltip", "WRÓĆ DO : KORYTARZ")
         unhovered SetVariable("interakcja_tooltip", "")
    
@@ -1558,6 +1609,7 @@ label plakaty_lore:
 label akcja_znalezienia_zetonu:
     $ ma_zeton = True
     $ backpack.add(przedmiot_zeton, 0, 0) 
+    play sound "audio/podnosic.ogg" fadein 1.0
     
     "Podnosisz metalowy krążek, który leżał pod kubkiem."
     show hero_szczesliwy at left
@@ -1634,7 +1686,8 @@ label automat_uzycie_zetonu:
     $ ma_karta_serwerownia = True
     $ serwerownia_otwarta = True
     $ komputerownia = True
-    $ backpack.add(przedmiot_karta_serwer, 0, 0) 
+    $ backpack.add(przedmiot_karta_serwer, 0, 0)
+    play sound "audio/podnosic.ogg" fadein 1.0
 
     show hero_szczesliwy at left
     ja "Mam ją! Karta Administratora."
@@ -1724,7 +1777,9 @@ screen Serwerownia_Interakcje():
         idle "images/strzalka_wyjscie_na_korytarz_serwer_idle.png"
         hover "images/strzalka_wyjscie_na_korytarz_serwer_hover.png"
         focus_mask True
-        action [SetVariable("interakcja_tooltip", ""), Jump("powrot_do_korytarza")]
+        action [
+            Play("sound", "audio/drzwi_otwieranie.ogg",),
+            SetVariable("interakcja_tooltip", ""), Jump("powrot_do_korytarza")]
         hovered SetVariable("interakcja_tooltip", "TO NA PEWENO NIE JEST WYJŚCIE")
         unhovered SetVariable("interakcja_tooltip", "")
 
@@ -2157,7 +2212,8 @@ label logic_sprawdz_karabin:
             "Weź Karabin (Automatyczna siła ognia)":
                 $ ma_bron = True
                 $ typ_broni = "Karabin"
-                $ backpack.add(przedmiot_karabin, 0, 0) 
+                $ backpack.add(przedmiot_karabin, 0, 0)
+                play sound "audio/podnosic.ogg" fadein 1.0 
                 show hero_wkurw at left
                 ja "Biorę go. Zasypię tego potwora gradem kul."
                 show arek at right
@@ -2198,6 +2254,7 @@ label logic_sprawdz_pistolet:
                 $ ma_bron = True
                 $ typ_broni = "Pistolet"
                 $ backpack.add(przedmiot_pistolet, 0, 0)
+                play sound "audio/podnosic.ogg" fadein 1.0
                 show hero_podstawowy at left
                 ja "Mały, ale zabójczy. Biorę go. Jeden celny strzał wystarczy."
                 show arek at right
@@ -2517,7 +2574,7 @@ label zakonczenie_zostan:
     "Słyszysz ciężki dźwięk ryglowania drzwi. Dźwięk, który oddziela cię od śmierci... i od świata."
     "Światła w korytarzu zmieniają barwę na kojący, sterylny błękit."
     show arek
-    
+
     r "Inicjuję procedurę wybudzania 'Ewy'. Przygotuj się. Mamy wiele pracy przed sobą."
     r "Witaj w domu. Na zawsze."
     hide arek 

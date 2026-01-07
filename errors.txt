@@ -2,9 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 134: end of line expected.
-    show hero_poczatek at left easeoutleft
-                               ^
+File "game/script.rpy", line 100: expected simple expression
+    stop music fadeout
+                       ^
 
 Ren'Py Version: Ren'Py 8.4.1.25072401
-Tue Jan  6 22:13:33 2026
+Wed Jan  7 14:58:06 2026
