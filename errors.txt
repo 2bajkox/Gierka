@@ -2,9 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 100: expected simple expression
-    stop music fadeout
-                       ^
+File "game/script.rpy", line 2313: Line is indented, but the preceding scene statement statement does not expect a block. Please check this line's indentation. You may have forgotten a colon (:).
+    show bg Korytarz_no_light
+    ^
 
 Ren'Py Version: Ren'Py 8.4.1.25072401
-Wed Jan  7 14:58:06 2026
+Wed Jan  7 18:12:34 2026

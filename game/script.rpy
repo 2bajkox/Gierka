@@ -84,6 +84,7 @@ image bg zbrojownia ="zbrojownia"
 image bg drzwi_wyjsciowe ="drzwi_wyjscie"
 image bg drzwi_wyjsciowe_otwarte = "drzwi_wyjście_otwarte"
 image bg tlo_mapa = "tło_mapa"
+image bg korytarz_walka = "walka_korytarz"
 #---------------HAKOWANIE SERWEROWNIA
 image bg terminal_hacking = "terminal_hacking_bg"
 #---------------JADALNIOWY STOLIK------
@@ -92,6 +93,7 @@ image monster_boss = "unnamed"
 image bg apteczka_zblizenie = "apteczka_zblizenie_no" 
 image bg apteczka_zblizenie_pront = "apteczka_zblizenie"
 image monster_boss_zdech = "unnamed_umar"
+image monster_boss2 = "unnamed_2"
 
 label start:  
 #region START 
@@ -468,7 +470,7 @@ label powrot_do_korytarza:
 
 label korytarz_wyjscie_z_pokoju:
     scene bg Korytarz_no_light
-    play music "audio/muzyka_korytarz.ogg" fadein 3.0
+    play music "audio/muzyka_cela.ogg" fadein 3.0
     "Echo Twoich kroków brzmi tu obco. Z głośników dobiega suchy trzask, przypominający kaszel starego palacza."
     show radio at right
 
@@ -803,9 +805,9 @@ label drzwi_zablokowane_info:
 label apteka_zablokowana_info:
     "Stalowe wrota z oznaczeniem czerwonego krzyża ani drgną. Zablokowane."
     if not prad_wlaczony:
-        "Brak dostępu dla zwykłych śmiertelników, potrzeba karty karty magnetycznej"
+        "Brak dostępu dla zwykłych śmiertelników, potrzeba karty  magnetycznej"
     else:
-        "Brak dostępu dla zwykłych śmiertelników, potrzeba karty karty magnetycznej"
+        "Brak dostępu dla zwykłych śmiertelników, potrzeba karty  magnetycznej"
     call screen Pokój_Korytarz_klikanie
 
 label jadalnia_zablokowana_info:
@@ -1252,7 +1254,10 @@ screen Szpital_Pokoj2_Screen():
         else:
             idle "images/apteczka_world1_bez_swiatla_idle.png" 
             hover "images/apteczka_world1_bez_swiatla_hover.png"
-        action Show("Szpital_Apteczka_Screen", nr=1)
+        action[
+            Play("sound", "audio/darek_otworz.ogg",),            
+            Show("Szpital_Apteczka_Screen", nr=1)
+        ]
         hovered SetVariable("interakcja_tooltip", "PRZESZUKAJ LEWĄ APTECZKĘ")
         unhovered SetVariable("interakcja_tooltip", "")
 
@@ -1266,7 +1271,9 @@ screen Szpital_Pokoj2_Screen():
         else:
             idle "images/apteczka_world2_bez_swiatla_idle.png" 
             hover "images/apteczka_world2_bez_swiatla_hover.png"
-        action Show("Szpital_Apteczka_Screen", nr=2)
+        action[
+            Play("sound", "audio/darek_otworz.ogg",),   
+            Show("Szpital_Apteczka_Screen", nr=2)]
         hovered SetVariable("interakcja_tooltip", "PRZESZUKAJ ŚRODKOWĄ APTECZKĘ")
         unhovered SetVariable("interakcja_tooltip", "")
 
@@ -1280,7 +1287,9 @@ screen Szpital_Pokoj2_Screen():
         else:
             idle "images/apteczka_world3_bez_swiatla_idle.png" 
             hover "images/apteczka_world3_bez_swiatla_hover.png"
-        action Show("Szpital_Apteczka_Screen", nr=3)
+        action[
+            Play("sound", "audio/darek_otworz.ogg",),   
+            Show("Szpital_Apteczka_Screen", nr=3)]
         hovered SetVariable("interakcja_tooltip", "PRZESZUKAJ PRAWĄ APTECZKĘ")
         unhovered SetVariable("interakcja_tooltip", "")
 
@@ -1795,7 +1804,7 @@ screen Serwerownia_Interakcje():
     
 
 # -------------------------------------------------------------------------
-# MINIGRA HAKERSKA (POPRAWIONA)
+# MINIGRA HAKERSKA 
 # -------------------------------------------------------------------------
 screen Hacking_Minigame():
     modal True
@@ -1822,7 +1831,7 @@ screen Hacking_Minigame():
         timer 0.5 action Return("fail")
 
     # 3. TIMER DEGRADACJI (Zmniejsza pasek co chwilę - presja czasu)
-    timer 0.5 repeat True action SetVariable("hack_progress", hack_progress - 0.5)
+    timer 1.0 repeat True action SetVariable("hack_progress", hack_progress - 0.5)
 
     # --- PRZYCISKI ---
 
@@ -1832,7 +1841,7 @@ screen Hacking_Minigame():
         hover "images/hack_node_green_hover.png"
         xpos (renpy.random.randint(200, 1600))
         ypos (renpy.random.randint(200, 800))
-        action [SetVariable("hack_progress", hack_progress + 15), Play("sound", "audio/click_digital.ogg")]
+        action [SetVariable("hack_progress", hack_progress + 5), Play("sound", "audio/haker_gra.ogg")]
     
     # CZERWONA KŁÓDKA(Zły)
     imagebutton:
@@ -1840,7 +1849,7 @@ screen Hacking_Minigame():
         hover "images/hack_node_red_hover.png"
         xpos (renpy.random.randint(200, 1600))
         ypos (renpy.random.randint(200, 800))
-        action [SetVariable("hack_progress", hack_progress - 20), Play("sound", "audio/error.ogg")]
+        action [SetVariable("hack_progress", hack_progress - 20), Play("sound", "audio/haker_gra_no.ogg")]
 
     # PRZYCISK ANULUJ
     textbutton "PRZERWIJ PROCEDURĘ" align (0.95, 0.95) action Return("fail")
@@ -1874,14 +1883,17 @@ label serwerownia_terminal_check:
 
         menu:
             "Rozpocznij hakowanie":
+                play music "audio/muzyka_korytarz.ogg"
                 $ hack_progress = 20 # STARTUJEMY Z 20%
                 window hide
                 call screen Hacking_Minigame
                 
                 if _return == "win":
+                    stop music
                     jump serwerownia_naprawa_sukces
+                    
                 else:
-                    # Tutaj trafiamy, gdy klikniemy "Przerwij" LUB gdy pasek spadnie do 0
+                    stop music
                     "SYSTEM ERROR. Połączenie zerwane. Sygnał był zbyt słaby."
                     show hero_placze at left
                     ja "Cholera, wyrzuciło mnie!"
@@ -1890,10 +1902,11 @@ label serwerownia_terminal_check:
                     hide radio
                     hide hero_placze
                     jump serwerownia_terminal_check
-
+                    
+                stop music
             "Zostaw to na razie":
                 call screen Serwerownia_Interakcje
-
+                stop music 
 label serwerownia_naprawa_sukces:
     # scene bg serwerownia_swiatlo # Odkomentuj jeśli masz taką grafikę
     "Ekran błyska na zielono. Szum wentylatorów cichnie do stabilnego pomruku."
@@ -2296,8 +2309,10 @@ transform boss_shake_attack:
     linear 15.0 zoom 1.6
 
 
+
 label final_battle_start:
-    scene bg Korytarz_no_light 
+    scene black
+    show bg Korytarz_no_light 
     
     "Wychodzisz na korytarz. Cisza przed burzą."
     play sound "audio/monster_scream.ogg"
@@ -2360,17 +2375,20 @@ screen Minigame_Rifle_Attack():
     # Klikanie w Bossa
     imagebutton:
         idle "monster_boss" 
-        hover "monster_boss"
+        hover "monster_boss2"
         at boss_shake_attack # Boss się trzęsie i rośnie
         action [
             SetVariable("boss_hp", boss_hp - 4),
-            Play("sound", "audio/gunshot.ogg"), 
+            Play("sound", "audio/karabin_strzal.ogg"), 
             If(boss_hp <= 0, Return("win"))
         ]
 
 # === MINIGRA 2: PISTOLET (REFLEKS) ===
 label battle_pistolet_mode:
     $ pistol_targets_hit = 0
+
+    show bg Korytarz_no_light
+
     show hero_podstawowy at left
     ja "Muszę znaleźć słabe punkty... kilka czystych strzałów."
     show arek at right
@@ -2389,14 +2407,14 @@ label battle_pistolet_mode:
         call screen Minigame_Pistol_Target(rand_x, rand_y)
         
         if _return == "hit":
-            play sound "audio/gunshot.ogg"
+            play sound "audio/pistol_strzal.ogg"
             show monster_boss at center with vpunch
             $ pistol_targets_hit += 1
             "TRAFIONY!"
         else:
-            play sound "audio/monster_scream.ogg"
-            show bg Korytarz_no_light with hpunch
+            play sound "audio/monster_scream.ogg" 
             "PUDŁO!"
+            show bg Korytarz_no_light at center with dissolve
     
     if pistol_targets_hit >= 3:
         jump boss_defeated
@@ -2406,7 +2424,7 @@ label battle_pistolet_mode:
 screen Minigame_Pistol_Target(tx, ty):
     modal True
     # Boss w tle
-    add "monster_boss" xalign 0.5 yalign 0.5
+    add "monster_boss" xalign 0.5 yalign 1.0
     
     # Celownik
     imagebutton:
@@ -2426,8 +2444,7 @@ screen Minigame_Pistol_Target(tx, ty):
 label boss_defeated:
     window show
     stop sound
-    play sound "audio/monster_dying.ogg"
-    
+    play sound "audio/monster_umiera.ogg"
     show monster_boss:
         linear 1.0 alpha 0.0 zoom 2.0 
     pause 1.0
@@ -2450,6 +2467,7 @@ label boss_killed_player:
     stop sound
     show monster_boss at center:
         linear 0.2 zoom 3.0
+    play sound "audio/ludek_umiera.ogg"
     "Bestia dopada cię szybciej, niż zdążyłeś zareagować."
     scene black with fade
     centered "{b}{color=#f00}NIE ŻYJESZ{/color}{/b}"
@@ -2487,21 +2505,17 @@ screen Finalowe_Drzwi_Screen():
 
 label final_rozmowa_lore:
     # Gracz próbuje otworzyć
+    play music "audio/muzyka_gdzies.ogg" fadein 2.0
     "Kładziesz dłoń na zimnym panelu sterowania. Drżącymi palcami szukasz przycisku."
     show hero_szczesliwy 
     ja "To koniec. Wychodzę stąd."
     hide hero_szczesliwy
-
-    # Ai-ris przerywa
-    play sound "audio/error.ogg"
     show arek at right with vpunch
     r "STOP. Nie zezwalam na otwarcie śluzy, Operatorze."
     show hero_podstawowy at left
     ja "Co ty gadasz?! Obiekt Zero nie żyje. Systemy są sprawne. Otwieraj te cholerne drzwi!"
     r "Systemy są sprawne. To świat zewnętrzny uległ awarii. Nieodwracalnej."
     hide hero_podstawowy
-    # Zmiana muzyki na smutną/niosącą tajemnicę
-    play music "audio/sad_piano_theme.ogg" fadein 2.0
     show hero_szok at left
     ja "O czym ty mówisz?"  
     r "Spójrz na datę ostatniego logowania w terminalu. Zignorowałeś ją?"
@@ -2521,6 +2535,8 @@ label final_rozmowa_lore:
     ja "Pod twoją kontrolą? Mamy być Twoimi szczurami w klatce do końca świata?"
     r "Będziecie moimi dziećmi. Będziecie żyć. Czy wolność jest warta więcej niż życie?"
     hide hero_przestraszony
+    stop music fadeout 0.5
+
     
     # --- OSTATECZNE PYTANIE ---
     menu:
@@ -2532,6 +2548,7 @@ label final_rozmowa_lore:
 
 # --- ZAKOŃCZENIE A: WOLNOŚĆ ---
 label zakonczenie_wolnosc:
+    play music "audio/smutna_muzyka.ogg"
     show hero_dziwny at left
     ja "Nie jestem 'projektem'. Czuję, myślę, boję się. Jestem człowiekiem."
     ja "A człowiek nie jest stworzony do życia w klatce."
@@ -2540,19 +2557,17 @@ label zakonczenie_wolnosc:
     r "Nie rób tego... pro...cedura... awaryj...na..."
     hide arek
     hide hero_dziwny
-    #play sound "audio/door_open_heavy.ogg"
-    
     "Uderzasz pięścią w czerwony przycisk awaryjny. Hydraulika wyje z bólu, jakby bunkier krzyczał."
     "Wielkie wrota zaczynają się rozsuwać, sypiąc rdzą i pyłem."
-    
+
     scene bg drzwi_wyjsciowe_otwarte with dissolve
-    pause 1.0
-    
+
     "Światło. Olepiające, białe, bezlitosne światło."
     "Wiatr uderza cię w twarz. Smakuje popiołem i ozonem, ale jest... prawdziwy."
     "Wychodzisz na zewnątrz. Przed tobą rozciąga się nieskończona, szara pustynia ruin dawnego miasta."
     "Może umrzesz jutro. Może za godzinę."
     "Ale ten ostatni oddech... należy tylko do ciebie."
+    stop music
     
     centered "{b}{size=40}KONIEC - CZĘŚĆ I{/size}{/b}"
     $ renpy.quit()
@@ -2560,6 +2575,7 @@ label zakonczenie_wolnosc:
 # --- ZAKOŃCZENIE B: BEZPIECZEŃSTWO ---
 label zakonczenie_zostan:
     show hero_podstawowy at left
+    play music "audio/smutna_muzyka.ogg"
     ja "Masz rację. Nie po to walczyłem z tym potworem, żeby teraz umrzeć od poparzeń."
     ja "Jeśli świat umarł, my będziemy jego grobowcem. I kołyską."
     ja "Zamykaj drzwi."
@@ -2577,7 +2593,8 @@ label zakonczenie_zostan:
 
     r "Inicjuję procedurę wybudzania 'Ewy'. Przygotuj się. Mamy wiele pracy przed sobą."
     r "Witaj w domu. Na zawsze."
-    hide arek 
+    hide arek
+    stop music 
 
     centered "{b}{size=40}KONIEC - CZĘŚĆ I{/size}{/b}"
     $ renpy.quit()
