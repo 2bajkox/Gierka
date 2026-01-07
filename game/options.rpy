@@ -38,7 +38,7 @@ define gui.about = _p("""
 ## dystrybucji. Musi zawierać tylko ASCII i nie może zawierać spacji, dwukropków
 ## ani średników.
 
-define build.name = "ZaliczenieGaming"
+define build.name = "PROJEKT ARKA "
 
 
 ## Dźwięki i muzyka ############################################################
@@ -147,7 +147,7 @@ default preferences.afm_time = 15
 ## Opcji tej zazwyczaj nie należy zmieniać. Jeżeli jest zmiana, to należy
 ## zastosować dosłowny ciąg, a nie wyrażenie.
 
-define config.save_directory = "ZaliczenieGaming-1760255649"
+define config.save_directory = "Projekt_Arka-1760255649"
 
 
 ## Ikona #######################################################################

@@ -255,7 +255,6 @@ screen quick_menu():
             textbutton _("S.Zapis") action QuickSave()
             textbutton _("S.Wczytaj") action QuickLoad()
             textbutton _("Opcje") action ShowMenu('preferences')
-            textbutton _("Ekwipunek") action Show("plecak_screen")
 
 
 ## Ten kod zapewnia, że ekran quick_menu jest wyświetlany w grze, gdy gracz nie

@@ -2179,39 +2179,39 @@ label zbrojownia_naprawa_panelu:
 # --- POŚREDNIE LABELE ---
 label sprawdz_karabin_1:
     $ sprawdzona_bron_nr = 1
-    call logic_sprawdz_karabin from _call_logic_sprawdz_karabin
+    call logic_sprawdz_karabin
 
 label sprawdz_karabin_2:
     $ sprawdzona_bron_nr = 2
-    call logic_sprawdz_karabin from _call_logic_sprawdz_karabin_1
+    call logic_sprawdz_karabin
 
 label sprawdz_karabin_3:
     $ sprawdzona_bron_nr = 3
-    call logic_sprawdz_karabin from _call_logic_sprawdz_karabin_2
+    call logic_sprawdz_karabin
 
 label sprawdz_shotgun_1:
     $ sprawdzona_bron_nr = 1
-    call logic_sprawdz_shotgun from _call_logic_sprawdz_shotgun
+    call logic_sprawdz_shotgun
 
 label sprawdz_shotgun_2:
     $ sprawdzona_bron_nr = 2
-    call logic_sprawdz_shotgun from _call_logic_sprawdz_shotgun_1
+    call logic_sprawdz_shotgun
 
 label sprawdz_shotgun_3:
     $ sprawdzona_bron_nr = 3
-    call logic_sprawdz_shotgun from _call_logic_sprawdz_shotgun_2
+    call logic_sprawdz_shotgun
 
 label sprawdz_pistolet_1:
     $ sprawdzona_bron_nr = 1
-    call logic_sprawdz_pistolet from _call_logic_sprawdz_pistolet
+    call logic_sprawdz_pistolet
 
 label sprawdz_pistolet_2:
     $ sprawdzona_bron_nr = 2
-    call logic_sprawdz_pistolet from _call_logic_sprawdz_pistolet_1
+    call logic_sprawdz_pistolet
 
 label sprawdz_pistolet_3:
     $ sprawdzona_bron_nr = 3
-    call logic_sprawdz_pistolet from _call_logic_sprawdz_pistolet_2
+    call logic_sprawdz_pistolet
 
 # --- LOGIKA WERYFIKACJI ---
 
