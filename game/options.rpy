@@ -13,7 +13,7 @@
 ## Znak _() otaczający ciąg znaków oznacza go jako kwalifikujący się do
 ## tłumaczenia.
 
-define config.name = _("PROJEKT ARKA")
+define config.name = _("PROJEKT_ARKA")
 
 
 ## Określa, czy tytuł podany powyżej jest wyświetlany na ekranie menu głównego.
@@ -24,7 +24,7 @@ define gui.show_name = True
 
 ## Wersja gry.
 
-##define config.version = "1.0"
+define config.version ="1.0"
 
 
 ## Tekst, który jest umieszczony na ekranie, w sekcji o grze. Umieść tekst
@@ -38,7 +38,9 @@ define gui.about = _p("""
 ## dystrybucji. Musi zawierać tylko ASCII i nie może zawierać spacji, dwukropków
 ## ani średników.
 
-define build.name = "PROJEKT ARKA "
+define build.name ="PROJEKT_ARKA"
+define build.icon_ico = "icon.ico"
+define build.icon_icns = "icon.icns"
 
 
 ## Dźwięki i muzyka ############################################################
